@@ -11,7 +11,7 @@ app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
 var database, collection;
 
-app.post("/files", (request, response) => {
+app.post("/push", (request, response) => {
     collection.insert(request.body, (error, result) => {
         if(error) {
             return response.status(500).send(error);
@@ -29,12 +29,12 @@ app.get("/getall", (request, response) => {
     });
 });
 
-app.get("/file/:id", (request, response) => {
-    collection.findOne({ "_id": new ObjectId(request.params.id) }, (error, result) => {
+app.get("/find/:id", (request, response) => {
+    collection.findOne({ "id": request.params.id }, (error, result) => {
         if(error) {
             return response.status(500).send(error);
         }
-        response.send(result);
+        response.send(result.filePath);
     });
 });
 
