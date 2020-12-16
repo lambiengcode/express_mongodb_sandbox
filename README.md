@@ -1,8 +1,8 @@
-# express_mongodb
-# restful api with nodes, express and mongodb
-==> test api
+## Restful api with Nodejs, Express and MongoDB
 
-1. create .env file URL=<url mongodb>
-2. edit your database & collection in index.js
-3. run 'docker-compose up' in your command
-4. check it work...
+### How I can run it? :tada::tada:
+
+- :rocket: Create .env file URL=<url mongodb>
+- :rocket: Edit your database & collection in index.js
+- :rocket: Run 'docker-compose up' in your command
+- :rocket: Check it work...
