@@ -1,17 +1,18 @@
 require('dotenv').config();
 const Express = require("express");
 const BodyParser = require("body-parser");
-const ObjectId = require("mongodb").ObjectID;
 const MongoClient = require('mongodb').MongoClient;
+const { response } = require('express');
 const uri = process.env.URL;
-const DATABASE_NAME = "storage_my_file";
+const DATABASE_NAME = process.env.DB_NAME;
 
 var app = Express();
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
-var database, collection;
+var collection;
 
 app.post("/push", (request, response) => {
+    console.log(request.body.username);
     collection.insert(request.body, (error, result) => {
         if(error) {
             return response.status(500).send(error);
@@ -20,7 +21,7 @@ app.post("/push", (request, response) => {
     });
 });
 
-app.get("/getall", (request, response) => {
+app.get("/get-all", (request, response) => {
     collection.find({}).toArray((error, result) => {
         if(error) {
             return response.status(500).send(error);
@@ -29,19 +30,19 @@ app.get("/getall", (request, response) => {
     });
 });
 
-app.get("/find/:id", (request, response) => {
-    collection.findOne({ "id": request.params.id }, (error, result) => {
-        if(error) {
-            return response.status(500).send(error);
+app.put("/edit-name/", (request, response) => {
+    collection.update({ "username": request.body.username }, {
+        $set: {
+          "fullName": request.body.fullName,
         }
-        response.send(result.filePath);
-    });
+      });
+    response.status(200).send('Update successful');
 });
 
-app.listen(3000, () => {
+app.listen(4000, () => {
     const client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
-        collection = client.db(DATABASE_NAME).collection("files");
+        collection = client.db(DATABASE_NAME).collection("users");
         // perform actions on the collection object
         console.log('Connected to ' + DATABASE_NAME);
     });
